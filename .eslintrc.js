@@ -12,22 +12,25 @@ module.exports = {
             jsx: true,
         },
         sourceType: 'module',
+        project: './tsconfig.json', // プロジェクト内の型認識に使用
     },
     plugins: [
         '@typescript-eslint', // ESLintのTypeScriptプラグインのルールを適用できる様にする（/eslint-pluginは省略可）
-        'import',
+        'import', // インポート/エクスポート構文のリンティングをサポートし、ファイルパスやインポート名のスペルミスによる問題を防ぐ
         'jest',
         'prettier',
         'react'
     ],
     extends: [
-        'eslint:recommended', // 推奨ルールセット適用
+        'eslint:recommended', // 推奨ルールセット適用 https://github.com/typescript-eslint/typescript-eslint
+        'plugin:@typescript-eslint/eslint-recommended', // eslint:recommendedに含まれるルールを型チェックでカバーできるものは無効化
         'plugin:@typescript-eslint/recommended', // 型チェックが不要なルールを適用
-        'plugin:import/errors',
-        'plugin:import/typescript',
-        'plugin:react/recommended',
+        'plugin:import/errors', //インポート/エクスポート構文のリンティングをサポートし、ファイルパスやインポート名のスペルミスによる問題を防ぐ https://www.npmjs.com/package/eslint-plugin-import
+        'plugin:import/typescript', //インポート/エクスポート構文のリンティングをサポートし、ファイルパスやインポート名のスペルミスによる問題を防ぐ https://www.npmjs.com/package/eslint-plugin-import
+        'plugin:jest/recommended', // Jest設定 https://github.com/jest-community/eslint-plugin-jest
         'plugin:prettier/recommended', // Prettierのお勧めルールセットを適用(https://dev.classmethod.jp/articles/eslint-and-prettier/)
-        'prettier',
+        'plugin:react/recommended', // React設定 https://github.com/yannickcr/eslint-plugin-react
+        'prettier', // prettier設定はextendsの最後に記載して、Prettierと競合するルールがあってもPrettierの挙動と整合性があるようにする https://github.com/prettier/eslint-config-prettier
     ],
     settings: {
         react: {
@@ -36,13 +39,13 @@ module.exports = {
         'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
     },
     rules: {
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-        '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/no-empty-interface': 'off',
-        '@typescript-eslint/no-unused-vars': 'error',
-        'no-unused-vars': 'off',
-        'sort-imports': 'off',
-        'import/order': [
+        '@typescript-eslint/explicit-module-boundary-types': 'off', // エクスポートする関数の返り値の型の明記が必須となっているため、offにするルール
+        '@typescript-eslint/no-empty-function': 'off', // 空の関数を許可しないルール
+        '@typescript-eslint/no-empty-interface': 'off', // 空のインターフェイスを許可しないルール
+        '@typescript-eslint/no-unused-vars': 'error', // 宣言されているが使用されていない変数を許可しないルールに対して、TypeScriptで意図せずエラーとなる箇所をサポートする拡張ルール
+        'no-unused-vars': 'off', // 宣言されているが使用されていない変数を許可しないルールに対して、TypeScriptで意図せずエラーとなる箇所をサポートする拡張ルール https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
+        'sort-imports': 'off', // import時のモジュール名ソートのルール https://eslint.org/docs/rules/sort-imports
+        'import/order': [ // import時のモジュール名自動ソートルール
             'error',
             {
                 alphabetize: {
@@ -51,17 +54,17 @@ module.exports = {
             },
         ],
     },
-    overrides: [
+    overrides: [ // 設定に一致するファイルを自動でlint対象にさせる
         {
             files: ['**/*.tsx'],
             rules: {
-                'react/prop-types': 'off'
+                'react/prop-types': 'off' // JavaScriptファイルではeslintのreact/prop-typesを除外して、TypeScriptでは対象にする
             },
         },
         {
             files: ['**/__test__/*'],
             env: {
-                'jest/globals': true,
+                'jest/globals': true, // __test__ディレクトリ化をJest対象にする
             },
             extends: ['plugin:jest/recommended', 'plugin:jest/style'],
         },
