@@ -6,7 +6,6 @@ jobs:
   eslint-jest:
     runs-on: ubuntu-latest
     steps:
-      - name: ESLint
       - uses: actions/checkout@v1
       - uses: stefanoeb/eslint-action@1.0.2
       - name: Jest
