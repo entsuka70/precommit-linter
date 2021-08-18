@@ -6,8 +6,10 @@ jobs:
   eslint-jest:
     runs-on: ubuntu-latest
     steps:
-      - name: ESLint
       - uses: actions/checkout@v1
-      - uses: stefanoeb/eslint-action@1.0.2
-      - name: Jest
-      - run: yarn test
+      - name: yarn install
+        run: yarn install
+      - name: Run ESLint
+        run: yarn format
+      - name: Run Jest
+        run: yarn test
