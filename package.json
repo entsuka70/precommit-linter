@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@jest-mock/express": "^1.4.4",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-essentials": "^6.3.4",
     "@storybook/addon-links": "^6.3.4",
@@ -76,5 +77,5 @@
   "resolutions": {
     "babel-loader": "8.1.0"
   },
-  "license" : "ISC"
+  "license": "ISC"
 }
